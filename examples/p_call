@@ -1,0 +1,75 @@
+// advanced example, specifying a function that calls another function
+// using an explicit call-stack as part of the model
+// illustrates the use of statevariables and C functions
+// to define the details of transitions
+// The global statevector of Buzz models is called B_state
+// which is type struct State, defined in ../include/state_orig.h
+// A specialized version for each model is generated in the
+// file ../include/state.h
+// the state transitions are recorded in data structure AST
+// which is defined in ../include/buzz.h
+
+// statevar	AST	*stack[16];	// for return address
+// statevar	int	s_depth;	// stack depth
+
+process f
+{
+	start();
+	call_fct();
+Ret:	resume();
+	next End;
+
+Fct:	fct();
+	unreachable();
+
+End:	skip();
+}
+
+%%
+int
+start(void)
+{
+	printf("start\n");
+	return 1;
+}
+int
+call_fct(void)
+{
+	assert(B_state.s_depth < 16);
+	// remember return address
+	B_state.stack[B_state.s_depth++] = find_label("Ret");
+
+	// replace with start of of function at label Fct
+	B_state.s[B_pid]->alt[0]->nxt    = find_label("Fct");
+	return 1;
+}
+int
+fct(void)
+{	AST *addr;
+
+	printf("	fct\n");
+	assert(B_state.s_depth > 0);
+
+	// retrieve the return address from the stack
+	addr = B_state.stack[--B_state.s_depth];
+	B_state.s[B_pid]->alt[0]->nxt = addr;
+	return 1;
+}
+int
+resume(void)
+{
+	printf("resume\n");
+	return 1;
+}
+int
+skip(void)
+{	printf("exit\n");
+	return 1;
+}
+int
+unreachable(void)
+{	// we can use assertions
+	// only inside C fcts
+	assert(0);
+}
+

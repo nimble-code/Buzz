@@ -1,0 +1,90 @@
+// anderson.1.pm protocol
+// illustrates use of additional statevariable declarations,
+// and explicit transition functions written in C
+// a promela equivalent is provided in comments
+// about 352K states, maxdepth 2,638 steps
+
+// statevar	uchar	Slot[2];	// shared
+// statevar	uchar	lvar[2];	// local 'myplace'
+// statevar	uchar	next;		// shared
+
+process p0		// B_pid == 1
+{			// byte lvar[B_pid] = 0;
+	i0();		// Slot[0] = 1;
+NCS:	f1();		// d_step { lvar[B_pid] = next; next++; }
+p1:	f5(); next p2;	// d_step { lvar[B_pid] == 2-1; next = next-2; } goto p2;
+p1:	f6(); next p2;	// d_step { lvar[B_pid] != 2-1; lvar[B_pid] = lvar[B_pid]%2; } goto p2;
+p2:	f2();		// Slot[ lvar[B_pid] ] == 1;
+p3:	f3();		// Slot[ lvar[B_pid] ] = 0;
+CS:	f4();		// Slot[ (lvar[B_pid]+1)%2 ] = 1;
+	next NCS;	// goto NCS;
+}
+
+process p1		// B_pid == 0
+{			// byte lvar[B_pid] = 0;
+NCS:	f1();		// d_step { lvar[B_pid] = next; next++; }
+p1:	f5(); next p2;	// d_step { lvar[B_pid] == 2-1; next = next-2; } goto p2;
+p1:	f6(); next p2;	// d_step { lvar[B_pid] != 2-1; lvar[B_pid] = lvar[B_pid]%2; } goto p2;
+p2:	f2();		// Slot[ lvar[B_pid] ] == 1;
+p3:	f3();		// Slot[ lvar[B_pid] ] = 0;
+CS:	f4();		// Slot[ (lvar[B_pid]+1)%2 ] = 1;
+	next NCS;	// goto NCS;
+}
+
+%%
+
+int i0(void)
+{
+	B_state.Slot[0] = 1;
+	return 1;
+}
+int f1(void)
+{
+	assert(B_pid < 2);
+	B_state.lvar[B_pid] = B_state.next++;
+	return 1;
+}
+int f2(void)
+{
+	assert(B_pid < 2);
+	return (B_state.Slot[ B_state.lvar[B_pid] ] == 1);
+}
+int f3(void)
+{
+	assert(B_pid < 2);
+	B_state.Slot[ (B_state.lvar[B_pid] + 2 - 1)%2 ] = 0;
+	return 1;
+}
+int f4(void)
+{
+	assert(B_pid < 2);
+	B_state.Slot[ (B_state.lvar[B_pid]+1)%2 ] = 1;
+	return 1;
+}
+ 
+int f5(void)
+{
+	assert(B_pid < 2);
+	if (B_state.lvar[B_pid] == 2-1)
+	{	B_state.next -= 2;
+		return 1;
+	}
+	return 0;
+}
+int f6(void)
+{	assert(B_pid < 2);
+	if (B_state.lvar[B_pid] != 2-1)
+	{	B_state.lvar[B_pid] = (B_state.lvar[B_pid])%2;
+		return 1;
+	}
+	return 0;
+}
+
+void
+dump_state(ulong d)
+{	// debugging option
+	fprintf(stderr, "%lu %d %d %d | %lu %d | %lu %d\n", d,
+		B_state.Slot[0], B_state.Slot[1], B_state.next,
+		(ulong) B_state.s[0], B_state.lvar[0],
+		(ulong) B_state.s[1], B_state.lvar[1]);
+}

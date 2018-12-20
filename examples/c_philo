@@ -1,0 +1,25 @@
+// buzz model for two dining philosophers
+
+process p0
+{
+s0:	fork0?tok; fork1?tok; next s1;
+s0:	fork1?tok; fork0?tok; next s1;
+
+s1:	fork0!tok; fork1!tok; next s0;
+s1:	fork1!tok; fork0!tok; next s0;
+}
+
+process p1
+{
+s0:	fork0?tok; fork1?tok; next s1;
+s0:	fork1?tok; fork0?tok; next s1;
+
+s1:	fork0!tok; fork1!tok; next s0;
+s1:	fork1!tok; fork0!tok; next s0;
+}
+
+process init
+{
+	fork0!tok;
+	fork1!tok;
+}

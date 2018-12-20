@@ -1,0 +1,18 @@
+// alternating bit protocol
+// with perfect channels
+// parsed by chan parser
+// transition definitions from chan
+
+process sender
+{
+s0:	s2r!m0; r2s?a0;
+	s2r!m1; r2s?a1;
+	next s0;
+}
+
+process receiver
+{
+s0:	s2r?m0; r2s!a0;
+	s2r?m1; r2s!a1;
+	next s0;
+}

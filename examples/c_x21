@@ -1,0 +1,143 @@
+process dte
+{
+state01: dce!m2; next state21;
+state01: dce!m9; next state14;
+state01: dte?m13; next state18;
+state01: dte?m21; next state08;
+state01: dce!m4; next state02;
+
+state02: dte?m22; next state03;
+state02: dte?m21; next state15;
+state02: dte?m13; next state19;
+
+state03: dce!m5; next state04;
+
+state04: dte?m13; next state19;
+state04: dce!m3; next state05;
+
+state05: dte?m13; next state19;
+state05: dte?m18; next state6A;
+
+state6A: dte?m13; next state19;
+state6A: dte?m17; next state07;
+
+state6B: dte?m17; next state07;
+state6B: dte?m17; next state10;
+state6B: dte?m13; next state19;
+
+state6C: dte?m13; next state19;
+state6C: dte?m12; next state11;
+
+state07: dte?m13; next state19;
+state07: dte?m18; next state6B;
+
+state08: dce!m3; next state09;
+state08: dce!m4; next state15;
+state08: dte?m13; next state19;
+
+state09: dte?m13; next state19;
+state09: dte?m17; next state10B;
+
+state10: dte?m13; next state19;
+state10: dte?m18; next state6C;
+
+state10B: dte?m18; next state6C;
+state10B: dte?m13; next state19;
+
+state11: dte?m13; next state19;
+state11: dte?m14; next state12;
+
+state12: dte?m13; next state19;
+state12: dce!m2; next state16;
+
+state14: dte?m13; next state19;
+state14: dce!m1; next state01;
+
+state15: dte?m22; next state03;
+state15: dte?m13; next state19;
+
+state16: dte?m13; next state17;
+
+state17: dte?m12; next state21;
+
+state18: dte?m12; next state01;
+state18: dte?m13; next state19;
+
+state19: dce!m2; next state20;
+
+state20: dte?m12; next state21;
+
+state21: dce!m1; next state01;
+}
+
+process dce
+{
+state01: dce?m2; next state21;
+state01: dce?m9; next state14;
+state01: dte!m13; next state18;
+state01: dte!m21; next state08;
+state01: dce?m4; next state02;
+
+state02: dte!m22; next state03;
+state02: dte!m21; next state15;
+state02: dce?m2; next state16;
+
+state03: dce?m5; next state04;
+
+state04: dce?m2; next state16;
+state04: dce?m3; next state05;
+
+state05: dce?m2; next state16;
+state05: dte!m18; next state6A;
+
+state6A: dce?m2; next state16;
+state6A: dte!m17; next state07;
+
+state6B: dte!m17; next state07;
+state6B: dte!m17; next state10;
+state6B: dce?m2; next state16;
+
+state6C: dce?m2; next state16;
+state6C: dte!m12; next state11;
+
+state07: dce?m2; next state16;
+state07: dte!m18; next state6B;
+
+state08: dce?m3; next state09;
+state08: dce?m4; next state15;
+state08: dce?m2; next state16;
+
+state09: dce?m2; next state16;
+state09: dte!m17; next state10B;
+
+state10: dce?m2; next state16;
+state10: dte!m18; next state6C;
+
+state10B: dte!m18; next state6C;
+state10B: dce?m2; next state16;
+
+state11: dce?m2; next state16;
+state11: dte!m14; next state12;
+
+state12: dce?m2; next state16;
+state12: dte!m13; next state19;
+
+state14: dce?m2; next state16;
+state14: dce?m1; next state01;
+
+state15: dte!m22; next state03;
+state15: dce?m2; next state16;
+
+state16: dte!m13; next state17;
+
+state17: dte!m12; next state21;
+
+state18: dte!m12; next state01;
+state18: dce?m2; next state16;
+
+state19: dce?m2; next state20;
+
+state20: dte!m12; next state21;
+
+state21: dce?m1; next state01;
+}

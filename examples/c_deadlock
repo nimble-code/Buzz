@@ -1,0 +1,25 @@
+// generic deadly embrace
+
+process user1
+{
+	CardReader?tok;
+	LinePrinter?tok;
+
+	LinePrinter!tok;
+	CardReader!tok;
+}
+
+process user2
+{
+	LinePrinter?tok;
+	CardReader?tok;
+
+	CardReader!tok;
+	LinePrinter!tok;
+}
+
+process init
+{
+	LinePrinter!tok;
+	CardReader!tok;
+}

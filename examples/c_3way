@@ -1,0 +1,70 @@
+// model of arpanet three-way handshake protocol
+// illustrating choice (multiple transitions preceded
+// by the same label)
+// parsed with chan parser
+// transition definitions with chan
+// shows reachable deadlock state caused by an
+// unspecified reception
+
+process this
+{
+closed:	that!m1; next synsent;
+closed:	this?m2; that!m3; next synrec;
+closed:	this?m4; next closed;
+closed:	this?m5; next closed;
+closed:	this?m100; that!m6; next closed;
+
+synsent: this?m7; that!m8; next estab;
+synsent: this?m2; that!m8; next synrec;
+synsent: this?m9; that!m8; next synrec;
+synsent: this?m10; that!m6; next synsent;
+synsent: this?m11; that!m6; next synsent;
+synsent: this?m12; that!m6; next synsent;
+synsent: this?m13; that!m6; next synsent;
+synsent: this?m4; next closed; next synsent;
+synsent: this?m100; next synsent;
+
+synrec: this?m17; next estab;
+synrec: this?m4;  next closed;
+synrec: this?m5;  next closed;
+synrec: this?m12; that!m6; next synrec;
+synrec: this?m13; that!m6; next synrec;
+synrec: this?m14; that!m8; next synrec;
+synrec: this?m10; that!m6; next synrec;
+synrec: this?m11; that!m6; next synrec;
+synrec: this?m15; that!m8; next synrec;
+synrec: this?m9; that!m8; next synrec;
+synrec: this?m2; next synrec;
+synrec: this?m7; next synrec;
+synrec: this?m16; that!m6; next synrec;
+
+estab: that!m16;
+
+state: this?m16; next end;
+state: this?m100; that!m6; next end;
+
+end:	terminate!m1;
+}
+
+process that
+{
+s0: that?m16; this!m16; next end;
+s0: that?m6; next s0;
+s0: that?m1; next s2;
+
+s2: this!m2;  next s0;
+s2: this!m9;  next s0;
+s2: this!m17; next s0;
+s2: this!m12; next s0;
+s2: this!m14; next s0;
+s2: this!m13; next s0;
+s2: this!m7;  next s0;
+s2: this!m10; next s0;
+s2: this!m15; next s0;
+s2: this!m11; next s0;
+s2: this!m16; next s0;
+s2: this!m4;  next s0;
+s2: this!m5;  next s0;
+
+end:	terminate!m2;
+}

@@ -1,0 +1,46 @@
+// illustration of how to use C function calls in buzz models
+// the line below is interpreted by buzz to build the modelchecker
+
+// constants	s2r, r2s, Msg, Ack
+
+process sender
+{
+s0:	sndM0(); rcvA0();
+	sndM1(); rcvA1();
+	stop();	// to trigger a backtrace
+}
+
+process receiver
+{
+s0:	rcvM0(); sndA0();
+	rcvM1(); sndA1();
+	next s0;
+}
+
+%%
+int snd(int dst, int tp, int seqno)
+{
+	if (B_state.sv[dst])
+	{	return 0;
+	}
+	B_state.sv[dst] = 2*tp + seqno; // 4,5 or 6,7
+	return 1;
+}
+
+int rcv(int src, int tp, int seqno)
+{
+	if (B_state.sv[src] != 2*tp + seqno)
+	{	return 0;
+	}
+	B_state.sv[src] = 0;
+	return 1;
+}
+int sndM0(void) { return snd(s2r, Msg, 0); }
+int sndM1(void) { return snd(s2r, Msg, 1); }
+int sndA0(void) { return snd(r2s, Ack, 0); }
+int sndA1(void) { return snd(r2s, Ack, 1); }
+int rcvM0(void) { return rcv(s2r, Msg, 0); }
+int rcvM1(void) { return rcv(s2r, Msg, 1); }
+int rcvA0(void) { return rcv(r2s, Ack, 0); }
+int rcvA1(void) { return rcv(r2s, Ack, 1); }
+int stop(void)  { return 0; }

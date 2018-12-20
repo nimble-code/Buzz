@@ -1,0 +1,28 @@
+// simple buzz model to illustrate using functions
+// for defining transitions
+
+process graph2
+{
+S0:	f(); next S1;
+
+S1:	f(); next S2;
+S1:	f(); next S4;
+S1:	f(); next S5;
+
+S2:	f(); next S3;
+S3:	f(); next S2;
+
+S4:	f(); next S0;
+S4:	f(); next S2;
+
+S5:	f(); next S6;
+S5:	f(); next S3;
+
+S6:	f(); next S7;
+S6:	f(); next S5;
+
+S7:	f(); next S6;
+S7:	f(); next S3;
+}
+%%
+int f(void) { return 1; }

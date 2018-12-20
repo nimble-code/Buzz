@@ -1,0 +1,41 @@
+// alternating bit protocol
+// with a separate channel process
+// also shows use of a timeout option
+// and specification of choice (multiple
+// transitions preceded by the same labelname)
+// parsed by chan parser
+// transition definitions from chan
+
+process sender
+{
+s0:	s2c!m0;
+
+s1:	c2s?a0; next s2;
+s1:	timeout; next s0;
+
+s2:	s2c!m1;
+
+s3:	c2s?a1; next s0;
+s3:	timeout; next s2;
+}
+
+process channel
+{
+s0:	s2c?m0; c2r!m0; next s0;
+s0:	s2c?m1;	c2r!m1; next s0;
+s0:	r2c?a0; c2s!a0; next s0;
+s0:	r2c?a1; c2s!a1; next s0;
+}
+
+process receiver
+{
+s0:	c2r?m0;
+
+s1:	r2c!a0; next s2;
+s1:	next s0;
+
+s2:	c2r?m1;
+
+s3:	r2c!a1; next s0;
+s3:	next s2;
+}

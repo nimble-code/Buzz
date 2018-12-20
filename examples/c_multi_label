@@ -1,0 +1,22 @@
+// requires	search=dfs_claim
+
+process trythis
+{
+label0:
+state1:
+	c!foo;
+x:
+	trythis@x;	// true
+label1:
+state2:			// statements can have multiple labels
+bar:
+	c?foo;
+	next state1;
+
+}
+
+process claim
+{
+	true;
+	false;
+}
