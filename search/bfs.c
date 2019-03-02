@@ -76,8 +76,8 @@ show_state(long d, State *s, ushort n, ushort t)
 	{	return;
 	}
 
-	assert(n >= 0 && n < B_nproc);
-	assert(t >= 0 && t < Fmax);
+	assert(n < B_nproc);	// unsigned, so >= 0 is given
+	assert(t < Fmax);
 
 	a = s->s[n];
 	assert(a != NULL);
