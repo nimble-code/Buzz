@@ -59,7 +59,7 @@ hash_s(uchar *v, int len, uint64_t seed)
     case 12: k2 ^= ((uint64_t)tail[11]) << 24; break;
     case 11: k2 ^= ((uint64_t)tail[10]) << 16; break;
     case 10: k2 ^= ((uint64_t)tail[9]) << 8; break;
-    case 9: k2 ^= ((uint64_t)tail[8]) << 0; break;
+    case 9: k2 ^= ((uint64_t)tail[8]) << 0;
             k2 *= c2;
             k2 = (k2 << 33) | (k2 >> 31);
             k2 *= c1;
@@ -71,7 +71,7 @@ hash_s(uchar *v, int len, uint64_t seed)
     case 4: k1 ^= ((uint64_t)tail[3]) << 24; break;
     case 3: k1 ^= ((uint64_t)tail[2]) << 16; break;
     case 2: k1 ^= ((uint64_t)tail[1]) << 8; break;
-    case 1: k1 ^= ((uint64_t)tail[0]) << 0; break;
+    case 1: k1 ^= ((uint64_t)tail[0]) << 0;
             k1 *= c1;
             k1 = (k1 << 31) | (k1 >> 33);
             k1 *= c2;
