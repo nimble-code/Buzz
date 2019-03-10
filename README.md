@@ -9,21 +9,10 @@ If you do, please report them and/or suggest fixes.
 
 These installation notes assume a Linux/Unix-like system.
 
-If working from the tar distribution, pick a location and
-untar the code there.
-For instance:
-
-    $ mkdir ~/Tools
-    $ mv buzz_v01.tar.gz ~/Tools
-    $ cd ~/Tools
-    $ tar -xzf buzz_v01.tar.gz
-    $ cd Buzz
-
-Or if working from the github.com/nimble-code/Buzz distribution
-just clone the Buzz repository and move into the top-level directory.
+Clone the Buzz repository and cd to the top-level directory.
 Install the tool:
 
-    $ sudo make install
+    $ sudo make install		# on cygwin, omit the sudo
     $ buzz -V  # basic check that it's working
     Buzz Version 1.0 -- 1 January 2019
 
